@@ -8,6 +8,10 @@
 #define FindBotDir 2
 #define ChangeBotDir 3
 
+#define dist_threshold 20
+#define init_angle 30
+#define final_angle 150
+#define delta 20
 AF_DCMotor motor1(1,MOTOR12_64KHZ); // set up motors.
 AF_DCMotor motor2(2, MOTOR12_8KHZ); 
  
@@ -17,9 +21,8 @@ Servo servo;
 int sound = 250;
 
 int rotation_angle;
-int max_angle=0,max_dist=0;
-int curr_angle, dist_threshold =20 , init_angle = 30 , final_angle = 150, delta = 20;
-float curr_dist;
+int max_angle, curr_angle;
+float curr_dist, max_dist = 0;
 
 int TODO = MoveBotFwd;
 
