@@ -7,7 +7,8 @@
 #define MoveBotFwd 1
 #define FindBotDir 2
 #define ChangeBotDir 3
-
+#define RIGHT_TURN 1
+#define LEFT_TURN 0
 #define dist_threshold 20
 #define init_angle 30
 #define final_angle 150
@@ -42,7 +43,7 @@ void setup()
   
   
 void loop() {
-  int t_angle,curr_rpm,t;
+  int t_angle=0, curr_rpm=0, t_delay=0;
   switch(TODO)
   {
     case MoveBotFwd: //Move Bot Forward
@@ -78,24 +79,22 @@ void loop() {
         TODO = ChangeBotDir;
         break;
      case ChangeBotDir: //Change Bot Direction...
-       if(rotation_angle < 90)
-       {
-          t_angle = 90 - rotation_angle;
-          curr_rpm = (curr_speed/255)*max_rpm;
-          t = t_angle / (2*3.14*curr_rpm);
+        t_angle = abs(90 - rotation_angle);
+        curr_rpm = (curr_speed/255)*max_rpm;
+        t_delay = t_angle / (2*3.14*curr_rpm);
+        motor_config = (rotation_angle< 90) ? RIGHT_TURN : LEFT_TURN;
+      
+        if(motor_config == RIGHT_TURN)   
+        {
           motor1.run(BACKWARD);
           motor2.run(RELEASE);
-          delay(t);
-       }
-       else
-       {
-          t_angle = rotation_angle - 90;
-          curr_rpm = (curr_speed/255)*max_rpm;
-          t = t_angle / (2*3.14*curr_rpm);
+        }
+        if(motor_config == LEFT_TURN)
+        {
           motor1.run(RELEASE);
           motor2.run(BACKWARD);
-          delay(t);
-       }
+        }
+        delay(t_delay);
         motor1.run(RELEASE);
         motor2.run(RELEASE);
         PREVTODO = TODO;
